@@ -1,0 +1,230 @@
+
+body{background-color: #1e1e1e;}
+table{border-collapse: collapse;}
+table{border-color: black;}
+
+.h1{
+    color: green;
+    text-shadow:
+    0 0 7px black,
+    0 0 10px green,
+    0 0 21px green,
+    0 0 42px green,
+    0 0 82px green,
+    0 0 92px green,
+    0 0 102px green,
+    0 0 0px green;
+
+    
+}
+.h2{
+    margin-left: 100px;
+    width: 50%;
+}
+
+.logo{
+    text-indent: -9999999px;
+    background: url(img/homes.png);
+    width: auto;
+    
+}
+.centerText {
+    text-align: center;
+}
+.centerImg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 15%;
+}
+.buttonMenu {
+    /*background-color: #efb281;*/
+    background-color: #ffffff;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 4px solid green;
+    text-align: center;
+    padding: 15px;
+    line-height: 0px;   
+
+    transition-duration: 0.4s;
+}
+
+.buttonMenu:hover {
+    background-color: green; /* Green */
+    color: black;
+    box-shadow: 0 12px 16px 0 black, 0 17px 50px 0 green;
+}
+
+.space-y-4 {
+    margin-top: 1rem;
+}
+
+
+
+.sliderh1{
+    width: 741px;
+    height: 495px;
+    background: url(img/h1/h.png);
+    margin: 100px auto;
+    animation: slideh1 20s infinite;
+}
+@keyframes slideh1{
+    25%{
+        background: url(img/h1/h.png);
+    }
+    70%{
+        background: url(img/h1/131499a_hb_ba_001.jpg);
+    }
+    95%{
+        background: url(img/h1/photo_43009846.jpg);
+    }
+}
+.sliderh2{
+    width: 741px;
+    height: 495px;
+    background: url(img/h2/960x640m.png);
+    margin: 100px auto;
+    animation: slideh2 20s infinite;
+}
+@keyframes slideh2{
+    25%{
+        background: url(img/h2/960x640m.png);
+    }
+    70%{
+        background: url(img/h2/280202325.jpg);
+    }
+    95%{
+        background: url(img/h2/5c9b66b8a34911eba5f2b243231e925d.jpg);
+    }
+}
+.sliderh3{
+    width: 741px;
+    height: 495px;
+    background: url(img/h3/h3.png);
+    margin: 100px auto;
+    animation: slideh3 20s infinite;
+}
+@keyframes slideh3{
+    25%{
+        background: url(img/h3/h3.png);
+    }
+    70%{
+        background: url(img/h3/bagni-di-pisa-facade.jpg);
+    }
+    95%{
+        background: url(img/h3/bagni-di-pisa-tuscany41.jpg);
+    }
+}
+.sliderh4{
+    width: 741px;
+    height: 495px;
+    background: url(img/h4/h.png);
+    margin: 100px auto;
+    animation: slideh4 20s infinite;
+}
+@keyframes slideh4{
+    25%{
+        background: url(img/h4/h.png);
+    }
+    70%{
+        background: url(img/h4/17-SR-Hotel-1200x797.jpg);
+    }
+    95%{
+        background: url(img/h4/San_Ranieri_Hotel-Pisa-Wellness_Fitness-1-390416.jpg);
+    }
+}
+.sliderh5{
+    width: 741px;
+    height: 495px;
+    background: url(img/h5/h.png);
+    margin: 100px auto;
+    animation: slideh5 20s infinite;
+}
+@keyframes slideh5{
+    25%{
+        background: url(img/h5/h.png);
+    }
+    70%{
+        background: url(img/h5/106707244.jpg);
+    }
+    95%{
+        background: url(img/h5/07_03_19-Hotel-Galilei-1.jpg);
+    }
+}
+.sliderh6{
+    width: 741px;
+    height: 495px;
+    background: url(img/h6/h.png);
+    margin: 100px auto;
+    animation: slideh6 20s infinite;
+}
+@keyframes slideh6{
+    25%{
+        background: url(img/h6/h.png);
+    }
+    70%{
+        background: url(img/h6/Grand_Hotel_Continental-Tirrenia_Pisa-Doppelzimmer_Standard-1-10292.jpg);
+    }
+    95%{
+        background: url(img/h6/52.jpg);
+    }
+}
+
+
+
+
+
+
+
+
+.desc{
+    width: 30%;
+    color: rgb(219, 214, 214);
+}
+.name{
+    
+    width: 30%;
+    color: #d7af4d;
+}
+.hotel{
+    border-radius: 10px;
+    border: solid 10px #3a3b3c;
+}
+
+
+
+
+
+
+
+.page {
+    display: block;
+    margin-left: 560px;
+    margin-right: auto;
+  
+}
+.namepage{
+    font-size: 200%;
+    color: #d7af4d;
+    display: block;
+    margin-left: 260px;
+    margin-right: auto;
+}
+.namepage2{
+    font-size: 200%;
+    color: #d7af4d;
+    display: block;
+    margin-left: 190px;
+    margin-right: auto;
+}
+.namepage3{
+    font-size: 200%;
+    color: #d7af4d;
+    display: block;
+    margin-left: 240px;
+    margin-right: auto;
+}
