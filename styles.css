@@ -28,6 +28,19 @@ table{border-color: black;}
     width: 50%;
 }
 
+.h3{
+    color: rgb(220,20,20);
+    text-shadow:
+    0 0 7px black,
+    0 0 10px red,
+    0 0 21px red,
+    0 0 42px red,
+    0 0 82px red,
+    0 0 92px red,
+    0 0 102px red,
+    0 0 0px red;
+}
+
 .logo{
     text-indent: -9999999px;
     background: url(img/homes.png);
