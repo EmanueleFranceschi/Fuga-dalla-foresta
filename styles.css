@@ -39,6 +39,8 @@ table{border-color: black;}
     0 0 92px red,
     0 0 102px red,
     0 0 0px red;
+    margin-left: 100px;
+    width: 50%;
 }
 
 .logo{
