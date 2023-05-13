@@ -123,3 +123,12 @@ function render(){
     context.fillRect(0,0,canvas.width,canvas.height);
     livello.disegnaLivello();
 }
+function linkOpzioni(){
+    link("options.html");
+}
+function linkClassifica(){
+    link("scoreboard.html");
+}
+function linkCrediti(){
+    link("credits.html");
+}
