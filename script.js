@@ -22,6 +22,7 @@ class Elemento{
         this.#y=y;
     }
 }
+
 class Livello{
     #elementi;
     constructor(){
@@ -29,7 +30,7 @@ class Livello{
     }
     addElemento(e){
         if(e==null) 
-            throw new Error("errore addelemento");
+            throw new Error("errore add elemento");
         this.#elementi.push(e);
     }
     disegnaLivello(){
@@ -38,6 +39,7 @@ class Livello{
         }
     }
 }
+
 class Piattaforma extends Elemento{
     #lunghezza;
     #colore;
@@ -62,6 +64,7 @@ class Piattaforma extends Elemento{
     set colore (colore){
         this.#colore=colore;
     }
+
     disegna(){
         context.fillStyle=this.colore;
         context.fillRect(this.x,this.y,this.lunghezza,canvas.height-this.y);
@@ -75,6 +78,7 @@ class Personaggio extends Elemento{
         this.velocitaX=0;
         this.velocitaY=0;
     }
+
     get velocitaX(){
         return this.#velocitaX;
     }
@@ -87,16 +91,28 @@ class Personaggio extends Elemento{
     set velocitaY(velocitaY){
         this.#velocitaY=velocitaY;
     }
+
     muovi(velocitaX){
         this.velocitaX=velocitaX;
-        this.x+=velocitaX;
+        this.x+=this.velocitaX;
     }
+
     salta(velocitaY){
         this.velocitaY=velocitaY;
-        this.y+=velocitaY;
+        let salta=setInterval(()=>{
+            this.y+=this.velocitaY;
+        },20);
+        setTimeout(()=> {
+            clearInterval(salta);
+            if(velocitaY!=5){
+                this.salta(velocitaY+1);
+            }
+        },60);
     }
-    disegna(){
 
+    disegna(){
+        context.fillStyle="rgb(255,0,0)";
+        context.fillRect(this.x,this.y,50,(canvas.height/100*15));
     }
 }
 class Ostacolo extends Elemento{
@@ -116,19 +132,24 @@ function gioca(){
     livello=new Livello();
     let pavimento=new Piattaforma(0,canvas.height-(canvas.height/100*20),canvas.width,"rgb(93, 222, 38)");
     livello.addElemento(pavimento);
-    riferimento=setInterval(render, 200);
+    let personaggio=new Personaggio(100,pavimento.y-(canvas.height/100*15));
+    livello.addElemento(personaggio);
+    riferimento=setInterval(render, 20);
+    window.addEventListener("keydown", function(event){
+        if(event.code=="KeyD")
+            personaggio.muovi(5);
+    },false);
+    window.addEventListener("keydown", function(event){
+        if(event.code=="KeyA")
+            personaggio.muovi(-5);
+    },false);
+    window.addEventListener("keydown", function(event){
+        if(event.code=="KeyW")
+            personaggio.salta(-5);
+    },false);
 }
 function render(){
     context.fillStyle="rgb(38, 188, 222)";
     context.fillRect(0,0,canvas.width,canvas.height);
     livello.disegnaLivello();
-}
-function linkOpzioni(){
-    link("options.html");
-}
-function linkClassifica(){
-    link("scoreboard.html");
-}
-function linkCrediti(){
-    link("credits.html");
 }
