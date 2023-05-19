@@ -40,6 +40,22 @@ class Livello{
     }
 }
 
+class Sfondo extends Elemento{
+    #immSfondo;
+    constructor(x,y,immSfondo){     
+        super(x,y);
+        this.immSfondo=new Image();
+        this.immSfondo.src=immSfondo;
+    }
+
+    get immSfondo(){
+        return this.#immSfondo;
+    }
+
+    disegna() {
+        context.drawImage(0,0,this.immSfondo);
+    }
+}
 class Piattaforma extends Elemento{
     #lunghezza;
     #colore;
@@ -147,21 +163,27 @@ function gioca(){
     canvas.hidden=false;
     document.getElementById("div").hidden=true;
     livello=new Livello();
+    
+    /*let sfondo=new Sfondo(0,0,);
+    livello.addElemento(sfondo);*/
+
     let pavimento=new Piattaforma(0,canvas.height-(canvas.height/100*20),canvas.width,"rgb(93, 222, 38)");
     livello.addElemento(pavimento);
+
     personaggio=new Personaggio(100,pavimento.y-(canvas.height/100*15));
     livello.addElemento(personaggio);
-    riferimento=setInterval(render, 20);
+
+    riferimento=setInterval(render, 10);
     window.addEventListener("keydown", function(event){
-        if(event.code=="KeyD")
+        if(event.code=="KeyD" || event.code=="ArrowRight")
             personaggio.muovi(5);
     },false);
     window.addEventListener("keydown", function(event){
-        if(event.code=="KeyA")
+        if(event.code=="KeyA" || event.code=="ArrowLeft")
             personaggio.muovi(-5);
     },false);
     window.addEventListener("keydown", function(event){
-        if(event.code=="KeyW")
+        if(event.code=="KeyW" || event.code=="ArrowUp")
             personaggio.salta(-5);
     },false);
 }
