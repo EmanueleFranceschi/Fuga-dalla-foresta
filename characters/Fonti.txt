@@ -1,6 +1,0 @@
-Sprite del personaggio protagonista "https://www.gameart2d.com/temple-run---free-sprites.html";
-Piattaforme, ostacoli e background "https://www.gameart2d.com/free-platformer-game-tileset.html";
-Sprite del nemico uccello "https://opengameart.org/content/bird-cute-bird";
-Sprite del serpente nemico "https://opengameart.org/content/snake";
-Sprite dell'ostacolo cactus "https://opengameart.org/content/cactus-3";
-Fonte icone "https://penzilla.itch.io/handdrawn-vector-icon-pack";
