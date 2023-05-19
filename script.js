@@ -73,10 +73,12 @@ class Piattaforma extends Elemento{
 class Personaggio extends Elemento{
     #velocitaX;
     #velocitaY;
+    #staSaltando;
     constructor(x,y){
         super(x,y);
         this.velocitaX=0;
         this.velocitaY=0;
+        this.#staSaltando=false;
     }
 
     get velocitaX(){
@@ -94,20 +96,34 @@ class Personaggio extends Elemento{
 
     muovi(velocitaX){
         this.velocitaX=velocitaX;
+        if(this.x+this.velocitaX<0){
+            this.x=0;
+        }
+        if(this.x+this.velocitaX+50>canvas.width){
+            this.x=canvas.width-50;
+        }
+        console.assert(this.x+this.velocitaX < 0, "Il personaggio esce dal canvas");
+        console.assert(this.x+this.velocitaX+50 > canvas.width, "Il personaggio esce dal canvas");
         this.x+=this.velocitaX;
     }
 
     salta(velocitaY){
-        this.velocitaY=velocitaY;
-        let salta=setInterval(()=>{
-            this.y+=this.velocitaY;
-        },20);
-        setTimeout(()=> {
-            clearInterval(salta);
-            if(velocitaY!=5){
-                this.salta(velocitaY+1);
-            }
-        },60);
+        if(!this.#staSaltando){
+            this.#staSaltando=true;
+            this.velocitaY=velocitaY;
+            let salta=setInterval(()=>{
+                console.assert(this.y+this.velocitaY < 0, "Il personaggio esce dal canvas");
+                console.assert(this.y+this.velocitaY > canvas.height, "Il personaggio esce dal canvas");
+                this.y+=this.velocitaY;
+            },20);
+            setTimeout(()=> {
+                clearInterval(salta);
+                this.#staSaltando=false;
+                if(velocitaY!=5){
+                    this.salta(velocitaY+1);
+                }
+            },60);
+        }
     }
 
     disegna(){
@@ -124,6 +140,7 @@ let canvas;
 let context;
 let riferimento;
 let livello;
+let personaggio;
 function gioca(){
     canvas = document.getElementById('id');
     context = canvas.getContext('2d');
@@ -132,7 +149,7 @@ function gioca(){
     livello=new Livello();
     let pavimento=new Piattaforma(0,canvas.height-(canvas.height/100*20),canvas.width,"rgb(93, 222, 38)");
     livello.addElemento(pavimento);
-    let personaggio=new Personaggio(100,pavimento.y-(canvas.height/100*15));
+    personaggio=new Personaggio(100,pavimento.y-(canvas.height/100*15));
     livello.addElemento(personaggio);
     riferimento=setInterval(render, 20);
     window.addEventListener("keydown", function(event){
@@ -152,4 +169,18 @@ function render(){
     context.fillStyle="rgb(38, 188, 222)";
     context.fillRect(0,0,canvas.width,canvas.height);
     livello.disegnaLivello();
+}
+function test(){
+    let r=setInterval(()=>{personaggio.muovi(5);},500);
+    setTimeout(()=>{
+        clearInterval(r);
+    },10000);
+    r=setInterval(()=>{personaggio.muovi(-5);},500);
+    setTimeout(()=>{
+        clearInterval(r);
+    },10000);
+    r=setInterval(()=>{personaggio.salta(-5);},500);
+    setTimeout(()=>{
+        clearInterval(r);
+    },10000);
 }
