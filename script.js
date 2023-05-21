@@ -38,6 +38,16 @@ class Livello{
             this.#elementi[i].disegna();
         }
     }
+    collisonePiattaforma(P){
+        for(let i=0;i<this.#elementi.length();i++){
+            if(this.#elementi[i] instanceof Piattaforma){
+                if(P.y + (canvas.height/100*15) <= this.#elementi[i].y){//non funziona perceh classe piattaforma e' anche il paviemnto in cui spowna il Personaggio, Soluzione: creare uan classe per le piattaforme, oppure far si che si riesca a saltare sopra le piattaforme
+                    P.velocitaY=0;
+                    P.fermo=true;
+                }
+            }
+        }
+    }
 }
 
 class Sfondo extends Elemento{
@@ -58,15 +68,20 @@ class Sfondo extends Elemento{
 }
 class Piattaforma extends Elemento{
     #lunghezza;
+    #altezza;
     #colore;
-    constructor (x,y,lunghezza,colore){
+    constructor (x,y,lunghezza,altezza,colore){
         super(x,y);
         this.lunghezza=lunghezza;
+        this.altezza=altezza;
         this.colore=colore;
     }
     
     get lunghezza(){
         return this.#lunghezza;
+    }
+    get altezza(){
+        return this.#altezza;
     }
     get colore(){
         return this.#colore;
@@ -77,31 +92,45 @@ class Piattaforma extends Elemento{
             throw new Error("errore lunghezza piattaforma");
         this.#lunghezza=lunghezza;
     }
+    set altezza(altezza){
+        if(altezza<=0)
+            throw new Error("errore altezza piattaforma");
+        this.#altezza=altezza;
+    }
     set colore (colore){
         this.#colore=colore;
     }
 
     disegna(){
         context.fillStyle=this.colore;
-        context.fillRect(this.x,this.y,this.lunghezza,canvas.height-this.y);
+        context.fillRect(this.x,this.y,this.lunghezza,this.altezza);
     }
 }
 class Personaggio extends Elemento{
     #velocitaX;
     #velocitaY;
     #staSaltando;
+    #fermo;
     constructor(x,y){
         super(x,y);
         this.velocitaX=0;
         this.velocitaY=0;
         this.#staSaltando=false;
+        this.#fermo=false;
     }
 
     get velocitaX(){
         return this.#velocitaX;
     }
+    get fermo(){
+        return this.#fermo;
+    }
     get velocitaY(){
         return this.#velocitaY;
+    }
+    
+    set fermo(fermo){
+        this.#fermo=fermo;
     }
     set velocitaX(velocitaX){
         this.#velocitaX=velocitaX;
@@ -114,13 +143,13 @@ class Personaggio extends Elemento{
         this.velocitaX=velocitaX;
         if(this.x+this.velocitaX<0){
             this.x=0;
-        }
-        if(this.x+this.velocitaX+50>canvas.width){
+        }else if(this.x+this.velocitaX+50>canvas.width){
             this.x=canvas.width-50;
+        }else{
+            console.assert(this.x+this.velocitaX < 0, "Il personaggio esce dal canvas");
+            console.assert(this.x+this.velocitaX+50 > canvas.width, "Il personaggio esce dal canvas");
+            this.x+=this.velocitaX;
         }
-        console.assert(this.x+this.velocitaX < 0, "Il personaggio esce dal canvas");
-        console.assert(this.x+this.velocitaX+50 > canvas.width, "Il personaggio esce dal canvas");
-        this.x+=this.velocitaX;
     }
 
     salta(velocitaY){
@@ -128,17 +157,22 @@ class Personaggio extends Elemento{
             this.#staSaltando=true;
             this.velocitaY=velocitaY;
             let salta=setInterval(()=>{
-                console.assert(this.y+this.velocitaY < 0, "Il personaggio esce dal canvas");
-                console.assert(this.y+this.velocitaY > canvas.height, "Il personaggio esce dal canvas");
-                this.y+=this.velocitaY;
+                livello.collisonePiattaforma(this);
+                if(!this.#fermo){
+                    console.log("salto");
+                    //console.assert(this.y+this.velocitaY < 0, "Il personaggio esce dal canvas");
+                    //console.assert(this.y+this.velocitaY > canvas.height, "Il personaggio esce dal canvas");
+                    this.y+=this.velocitaY;
+                }
             },20);
             setTimeout(()=> {
                 clearInterval(salta);
                 this.#staSaltando=false;
-                if(velocitaY!=5){
+                if(velocitaY!=10){
                     this.salta(velocitaY+1);
                 }
             },60);
+            this.#fermo=false;
         }
     }
 
@@ -157,6 +191,7 @@ let context;
 let riferimento;
 let livello;
 let personaggio;
+
 function gioca(){
     canvas = document.getElementById('id');
     context = canvas.getContext('2d');
@@ -167,24 +202,27 @@ function gioca(){
     /*let sfondo=new Sfondo(0,0,);
     livello.addElemento(sfondo);*/
 
-    let pavimento=new Piattaforma(0,canvas.height-(canvas.height/100*20),canvas.width,"rgb(93, 222, 38)");
+    let pavimento=new Piattaforma(0,canvas.height-(canvas.height/100*20),canvas.width,canvas.height,"rgb(93, 222, 38)");
     livello.addElemento(pavimento);
 
     personaggio=new Personaggio(100,pavimento.y-(canvas.height/100*15));
     livello.addElemento(personaggio);
 
+    let piattaforma=new Piattaforma(300,510,200,10,"rgb(93, 222, 38)")
+    livello.addElemento(piattaforma);
+
     riferimento=setInterval(render, 10);
     window.addEventListener("keydown", function(event){
         if(event.code=="KeyD" || event.code=="ArrowRight")
-            personaggio.muovi(5);
+            personaggio.muovi(15);
     },false);
     window.addEventListener("keydown", function(event){
         if(event.code=="KeyA" || event.code=="ArrowLeft")
-            personaggio.muovi(-5);
+            personaggio.muovi(-15);
     },false);
     window.addEventListener("keydown", function(event){
         if(event.code=="KeyW" || event.code=="ArrowUp")
-            personaggio.salta(-5);
+            personaggio.salta(-10);
     },false);
 }
 function render(){
