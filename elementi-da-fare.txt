@@ -1,0 +1,20 @@
+✔️-Menu
+-Interfaccia gioco
+-gioco:
+	✔️Personaggio
+	Piattaforme
+	Ostacoli
+	Scroll
+	sfondo/ambientazione
+	power-up
+	morte
+	vittoria/fine livello
+	monete
+-livelli
+-Opzioni
+-Classifica
+✔️-Crediti
+-interfaccia per account
+-interfaccia livelli
+✔️-Responsive menu
+-Responsive Gioco
