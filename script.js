@@ -1,6 +1,12 @@
 class Elemento{
     #x;
     #y;
+    /**
+     * Classe padre per ogni elemento che deve essere rappresentato sul canvas.
+     * @constructor
+     * @param {int} x - ascissa del primo punto in alto a sinistra dell'elemento
+     * @param {int} y - ordinata del primo punto in alto a sinistra dell'elemento
+     */
     constructor (x,y){
         this.x=x;
         this.y=y;
