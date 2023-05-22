@@ -38,16 +38,6 @@ class Livello{
             this.#elementi[i].disegna();
         }
     }
-    collisonePiattaforma(P){
-        for(let i=0;i<this.#elementi.length();i++){
-            if(this.#elementi[i] instanceof Piattaforma){
-                if(P.y + (canvas.height/100*15) <= this.#elementi[i].y){//non funziona perceh classe piattaforma e' anche il paviemnto in cui spowna il Personaggio, Soluzione: creare uan classe per le piattaforme, oppure far si che si riesca a saltare sopra le piattaforme
-                    P.velocitaY=0;
-                    P.fermo=true;
-                }
-            }
-        }
-    }
 }
 
 class Sfondo extends Elemento{
@@ -66,23 +56,56 @@ class Sfondo extends Elemento{
         context.drawImage(0,0,this.immSfondo);
     }
 }
-class Piattaforma extends Elemento{
+class Pavimento extends Elemento{
     #lunghezza;
-    #altezza;
     #colore;
-    constructor (x,y,lunghezza,altezza,colore){
+    constructor (x,y,lunghezza,colore){
         super(x,y);
         this.lunghezza=lunghezza;
-        this.altezza=altezza;
         this.colore=colore;
     }
     
     get lunghezza(){
         return this.#lunghezza;
     }
+    get colore(){
+        return this.#colore;
+    }
+    
+    set lunghezza (lunghezza){
+        if(lunghezza<=0)
+            throw new Error("errore lunghezza pavimento");
+        this.#lunghezza=lunghezza;
+    }
+    set colore (colore){
+        this.#colore=colore;
+    }
+
+    disegna(){
+        context.fillStyle=this.colore;
+        context.fillRect(this.x,this.y,this.lunghezza,canvas.height-this.y);
+    }
+}
+
+class Piattaforma extends Elemento{
+    #lunghezza;
+    #altezza;
+    #colore;
+    constructor (x,y,lunghezza,altezza,colore){
+        super(x,y);
+        this.altezza=altezza;
+        this.lunghezza=lunghezza;
+        this.colore=colore;
+    }
+    
+    get lunghezza(){
+        return this.#lunghezza;
+    }
+
     get altezza(){
         return this.#altezza;
     }
+
     get colore(){
         return this.#colore;
     }
@@ -92,11 +115,13 @@ class Piattaforma extends Elemento{
             throw new Error("errore lunghezza piattaforma");
         this.#lunghezza=lunghezza;
     }
+
     set altezza(altezza){
         if(altezza<=0)
             throw new Error("errore altezza piattaforma");
         this.#altezza=altezza;
     }
+
     set colore (colore){
         this.#colore=colore;
     }
@@ -106,31 +131,23 @@ class Piattaforma extends Elemento{
         context.fillRect(this.x,this.y,this.lunghezza,this.altezza);
     }
 }
+
 class Personaggio extends Elemento{
     #velocitaX;
     #velocitaY;
     #staSaltando;
-    #fermo;
     constructor(x,y){
         super(x,y);
         this.velocitaX=0;
         this.velocitaY=0;
         this.#staSaltando=false;
-        this.#fermo=false;
     }
 
     get velocitaX(){
         return this.#velocitaX;
     }
-    get fermo(){
-        return this.#fermo;
-    }
     get velocitaY(){
         return this.#velocitaY;
-    }
-    
-    set fermo(fermo){
-        this.#fermo=fermo;
     }
     set velocitaX(velocitaX){
         this.#velocitaX=velocitaX;
@@ -143,13 +160,13 @@ class Personaggio extends Elemento{
         this.velocitaX=velocitaX;
         if(this.x+this.velocitaX<0){
             this.x=0;
-        }else if(this.x+this.velocitaX+50>canvas.width){
-            this.x=canvas.width-50;
-        }else{
-            console.assert(this.x+this.velocitaX < 0, "Il personaggio esce dal canvas");
-            console.assert(this.x+this.velocitaX+50 > canvas.width, "Il personaggio esce dal canvas");
-            this.x+=this.velocitaX;
         }
+        if(this.x+this.velocitaX+50>canvas.width){
+            this.x=canvas.width-50;
+        }
+        console.assert(this.x+this.velocitaX < 0, "Il personaggio esce dal canvas");
+        console.assert(this.x+this.velocitaX+50 > canvas.width, "Il personaggio esce dal canvas");
+        this.x+=this.velocitaX;
     }
 
     salta(velocitaY){
@@ -157,24 +174,25 @@ class Personaggio extends Elemento{
             this.#staSaltando=true;
             this.velocitaY=velocitaY;
             let salta=setInterval(()=>{
-                livello.collisonePiattaforma(this);
-                if(!this.#fermo){
-                    console.log("salto");
-                    //console.assert(this.y+this.velocitaY < 0, "Il personaggio esce dal canvas");
-                    //console.assert(this.y+this.velocitaY > canvas.height, "Il personaggio esce dal canvas");
-                    this.y+=this.velocitaY;
-                }
-            },20);
+                console.assert(this.y+this.velocitaY < 0, "Il personaggio esce dal canvas");
+                console.assert(this.y+this.velocitaY > canvas.height, "Il personaggio esce dal canvas");
+                this.y+=this.velocitaY;
+            },10);
             setTimeout(()=> {
                 clearInterval(salta);
                 this.#staSaltando=false;
-                if(velocitaY!=10){
+                if(velocitaY!=5){
                     this.salta(velocitaY+1);
                 }
             },60);
-            this.#fermo=false;
         }
     }
+
+    salePiattaforma(piattaforma){
+        if(this.y+this.height<=piattaforma.y && this.y+this.height+this.velocitaY>=piattaforma.y){
+            this.velocitaY=0;
+        }
+    } //Non va
 
     disegna(){
         context.fillStyle="rgb(255,0,0)";
@@ -186,12 +204,12 @@ class Ostacolo extends Elemento{
 
     }
 }
+
 let canvas;
 let context;
 let riferimento;
 let livello;
 let personaggio;
-
 function gioca(){
     canvas = document.getElementById('id');
     context = canvas.getContext('2d');
@@ -200,30 +218,31 @@ function gioca(){
     livello=new Livello();
     
     /*let sfondo=new Sfondo(0,0,);
-    livello.addElemento(sfondo);*/
+    livello.addElemento(sfondo);*/ //Non carica le immagini
 
-    let pavimento=new Piattaforma(0,canvas.height-(canvas.height/100*20),canvas.width,canvas.height,"rgb(93, 222, 38)");
+    let pavimento=new Pavimento(0,canvas.height-(canvas.height/100*20),canvas.width,"rgb(93, 222, 38)");
     livello.addElemento(pavimento);
+
+    let piattaforma=new Piattaforma(400,560,200,15,"rgb(31, 0, 156)");
+    livello.addElemento(piattaforma);
 
     personaggio=new Personaggio(100,pavimento.y-(canvas.height/100*15));
     livello.addElemento(personaggio);
 
-    let piattaforma=new Piattaforma(300,510,200,10,"rgb(93, 222, 38)")
-    livello.addElemento(piattaforma);
-
     riferimento=setInterval(render, 10);
     window.addEventListener("keydown", function(event){
         if(event.code=="KeyD" || event.code=="ArrowRight")
-            personaggio.muovi(15);
+            personaggio.muovi(8);
     },false);
     window.addEventListener("keydown", function(event){
         if(event.code=="KeyA" || event.code=="ArrowLeft")
-            personaggio.muovi(-15);
+            personaggio.muovi(-8);
     },false);
     window.addEventListener("keydown", function(event){
         if(event.code=="KeyW" || event.code=="ArrowUp")
-            personaggio.salta(-10);
+            personaggio.salta(-5);
     },false);
+    
 }
 function render(){
     context.fillStyle="rgb(38, 188, 222)";
