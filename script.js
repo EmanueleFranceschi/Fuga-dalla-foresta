@@ -166,13 +166,11 @@ class Personaggio extends Elemento{
         this.velocitaX=velocitaX;
         if(this.x+this.velocitaX<0){
             this.x=0;
-        }
-        if(this.x+this.velocitaX+50>canvas.width){
+        }else if(this.x+this.velocitaX+50>canvas.width){
             this.x=canvas.width-50;
+        }else{
+            this.x+=this.velocitaX;
         }
-        console.assert(this.x+this.velocitaX < 0, "Il personaggio esce dal canvas");
-        console.assert(this.x+this.velocitaX+50 > canvas.width, "Il personaggio esce dal canvas");
-        this.x+=this.velocitaX;
     }
 
     salta(velocitaY){
@@ -180,14 +178,12 @@ class Personaggio extends Elemento{
             this.#staSaltando=true;
             this.velocitaY=velocitaY;
             let salta=setInterval(()=>{
-                console.assert(this.y+this.velocitaY < 0, "Il personaggio esce dal canvas");
-                console.assert(this.y+this.velocitaY > canvas.height, "Il personaggio esce dal canvas");
                 this.y+=this.velocitaY;
-            },10);
+            },20);
             setTimeout(()=> {
                 clearInterval(salta);
                 this.#staSaltando=false;
-                if(velocitaY!=5){
+                if(velocitaY!=10){
                     this.salta(velocitaY+1);
                 }
             },60);
@@ -221,6 +217,8 @@ function gioca(){
     context = canvas.getContext('2d');
     canvas.hidden=false;
     document.getElementById("div").hidden=true;
+    canvas.height=canvas.width*0.6;
+
     livello=new Livello();
     
     /*let sfondo=new Sfondo(0,0,);
@@ -246,7 +244,7 @@ function gioca(){
     },false);
     window.addEventListener("keydown", function(event){
         if(event.code=="KeyW" || event.code=="ArrowUp")
-            personaggio.salta(-5);
+            personaggio.salta(-10);
     },false);
     
 }
