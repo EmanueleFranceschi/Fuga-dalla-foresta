@@ -1,5 +1,11 @@
 
-body{background-color: #1e1e1e;}
+body{
+    margin: 0;
+    background-color: #1e1e1e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 table{border-collapse: collapse;}
 table{border-color: black;}
 
@@ -31,7 +37,7 @@ a{
     width: 50%;
 }
 
-.membri{
+.membri{/*MARCO ROCCIA PERCHE*/
     zoom: 65%;
     color: rgb(255, 255, 255);
     text-shadow:
