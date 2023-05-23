@@ -5,7 +5,7 @@
 	Piattaforme
 	Ostacoli
 	Scroll
-	sfondo/ambientazione
+	✔️sfondo/ambientazione
 	power-up
 	morte
 	vittoria/fine livello
