@@ -48,6 +48,21 @@ class Livello{
         this.#elementi.push(e);
     }
     /**
+     * Restituisce l'elemento nella posizione indicata.
+     * @param {int} i la posizione nel vettore dell'elemento
+     * @returns l'elemento nella posizione indicata
+     */
+    getElemento(i){
+        return this.#elementi[i];
+    }
+    /**
+     * 
+     * @returns la dimensione del vettore
+     */
+    getDimensione(){
+        return this.#elementi.length;
+    }
+    /**
      * Disegna tutti gli elementi del livello nel canvas.
      */
     disegnaLivello(){
@@ -117,10 +132,11 @@ class Piattaforma extends Elemento{
 class Personaggio extends Elemento{
     #velocitaX;
     #velocitaY;
-    #staSaltando;
+    #inAria;
     #lunghezza;
     #altezza;
     #immagine;
+    #vita;
     /**
      * Classe che rappresenta il personaggio del gioco. 
      * @constructor
@@ -131,11 +147,12 @@ class Personaggio extends Elemento{
         super(x,y);
         this.velocitaX=0;
         this.velocitaY=0;
-        this.lunghezza=50;
+        this.lunghezza=80;
         this.altezza=percentualeHeight(15);
-        this.#staSaltando=false;
+        this.#inAria=false;
         this.#immagine=new Image();
         this.#immagine.src="characters/runner/Idle__000.png";
+        this.#vita=2;
     }
 
     get velocitaX(){
@@ -150,6 +167,9 @@ class Personaggio extends Elemento{
     get altezza(){
         return this.#altezza;
     }
+    get vita(){
+        return this.#vita;
+    }
     set velocitaX(velocitaX){
         this.#velocitaX=velocitaX;
     }
@@ -162,64 +182,104 @@ class Personaggio extends Elemento{
     set altezza(altezza){
         this.#altezza=altezza;
     }
+    set vita(vita){
+        return this.#vita;
+    }
     /**
      * Muove il personaggio.
      */
     muovi(){
-        if(this.x+this.velocitaX<0){
-            this.x=0;
-        }else if(this.x+this.velocitaX+this.lunghezza>canvas.width){
-            this.x=canvas.width-this.lunghezza;
-        }else{
+        if(!this.collisione()){
             this.x+=this.velocitaX;
         }
-
-        if(this.x+this.velocitaX<0){
-            this.x=0;
-        }else if(this.x+this.velocitaX+this.lunghezza>canvas.width){
-            this.x=canvas.width-this.lunghezza;
-        }else{
-            this.x+=this.velocitaX;
+        if(this.#inAria){
+            this.y+=this.velocitaY;
+        }
+        if(!this.atterrato()){
+            this.gravita(2);
         }
     }
     /**
-     * Fa saltare il personaggio.
-     * @param {int} velocitaY 
+     * Fa saltare e cadere il personaggio.
+     * @param {int} velocitaDiPartenza la velocità aerea da cui parte (negativa nel caso del salto, positiva nel caso della caduta)
      */
-    salta(velocitaY){
-        if(!this.#staSaltando){
-            this.#staSaltando=true;
-            this.velocitaY=velocitaY;
+    gravita(velocitaDiPartenza){
+        if(!this.#inAria){
+            this.#inAria=true;
             let salta=setInterval(()=>{
-                this.y+=this.velocitaY;
-            },20);
-            setTimeout(()=> {
-                clearInterval(salta);
-                this.#staSaltando=false;
-                if(velocitaY!=10){
-                    this.salta(velocitaY+1);
+                this.velocitaY=velocitaDiPartenza;
+                velocitaDiPartenza++;
+                if(this.atterrato()){
+                    this.velocitaY=0;
+                    this.#inAria=false;
+                    clearInterval(salta);
                 }
-            },60);
+            },20);
         }
     }
-
+    /**
+     * Controlla se il personaggio sbatte contro una piattaforma o contro un ostacolo orizzontalmente.
+     * @returns se ha sbattuto o no
+     */
     collisione(){
-        if(this.velocitaX>0){
-
-        }else{
-
+        if(this.x+this.lunghezza+this.velocitaX >= canvas.width){
+            this.x=canvas.width-this.lunghezza;
+            return true;
         }
+        if(this.x+this.velocitaX < 0){
+            this.x=0;
+            return true;
+        }
+        for(let i=0; i<livello.getDimensione(); i++){
+            if(this.x+this.lunghezza+this.velocitaX > livello.getElemento(i).x && 
+            this.x+this.velocitaX < livello.getElemento(i).x+livello.getElemento(i).lunghezza &&
+            this.y+this.altezza > livello.getElemento(i).y && 
+            this.y < livello.getElemento(i).y+livello.getElemento(i).altezza){
+                if(livello.getElemento(i) instanceof Piattaforma){
+                    if(this.velocitaX>0)
+                        this.x=livello.getElemento(i).x-this.lunghezza;
+                    else
+                        this.x=livello.getElemento(i).x+livello.getElemento(i).lunghezza;
+                    return true;
+                }else if(livello.getElemento(i) instanceof Ostacolo){
+                    this.vita--;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-
-    atterraggio(){
-
+    /**
+     * Controlla se il personaggio è atterrato.
+     * @returns se deve smettere di cadere o no
+     */
+    atterrato(){
+        if(this.y+this.altezza+this.velocitaY > pavimento.y){
+            this.y=pavimento.y-this.#altezza;
+            return true;
+        }
+        for(let i=0; i<livello.getDimensione(); i++){
+            if(this.x+this.lunghezza > livello.getElemento(i).x && 
+            this.x < livello.getElemento(i).x+livello.getElemento(i).lunghezza &&
+            this.y+this.altezza+this.velocitaY > livello.getElemento(i).y){
+                if(livello.getElemento(i) instanceof Piattaforma){
+                    this.y=livello.getElemento(i).y-this.#altezza;
+                    return true;
+                }else if(livello.getElemento(i) instanceof Ostacolo){
+                    this.vita--;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
      * Disegna il personaggio nel canvas.
      */
     disegna(){
-        this.muovi();
+        if(this.velocitaX!=0 || this.velocitaY!=0)
+            this.muovi();
         if(this.#immagine.complete)
             context.drawImage(this.#immagine,this.x,this.y,this.lunghezza,this.altezza);
     }
@@ -236,6 +296,7 @@ let riferimento;
 let livello;
 let personaggio;
 let sfondo;
+let pavimento;
 function gioca(){
     //rendo il canvas visibile
     canvas = document.getElementById('id');
@@ -249,26 +310,33 @@ function gioca(){
     //creo il livello
     livello=new Livello();
     //creo il pavimento
-    let pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),canvas.width,percentualeHeight(20),"rgb(93, 222, 38)");
-    livello.addElemento(pavimento);
+    pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),canvas.width,percentualeHeight(20),"rgb(93, 222, 38)");
     //aggiungo piattaforme
-    livello.addElemento(new Piattaforma(400,560,200,15,"rgb(31, 0, 156)"));
+    livello.addElemento(new Piattaforma(400,700,200,15,"rgb(31, 0, 156)"));
     //creo il personaggio
     personaggio=new Personaggio(percentualeWidth(5),pavimento.y-percentualeHeight(15));
     //ogni 10 millisecondi il canvas viene ridisegnato
     riferimento=setInterval(render, 10);
-    //inizializzo i controlli
+    //gestisco i controlli
     window.addEventListener("keydown", function(event){
-        if(event.code=="KeyD" || event.code=="ArrowRight")
-            personaggio.velocitaX=8;
+        switch (event.code){
+        case "KeyD": case "ArrowRight":
+            personaggio.velocitaX=4;
+            break;
+        case "KeyA": case "ArrowLeft":
+            personaggio.velocitaX=-4;
+            break;
+        case "KeyW": case "ArrowUp":
+            personaggio.gravita(-15);
+            break;
+        }
     },false);
-    window.addEventListener("keydown", function(event){
-        if(event.code=="KeyA" || event.code=="ArrowLeft")
-            personaggio.velocitaX=-8;
-    },false);
-    window.addEventListener("keydown", function(event){
-        if(event.code=="KeyW" || event.code=="ArrowUp")
-            personaggio.salta(-10);
+    window.addEventListener("keyup", function(event){
+        switch (event.code){
+        case "KeyD": case "ArrowRight": case "KeyA": case "ArrowLeft":
+            personaggio.velocitaX=0;
+            break;
+        }
     },false);
 }
 /**
@@ -278,6 +346,7 @@ function render(){
     if(sfondo.complete)
         context.drawImage(sfondo,0,0,canvas.width,canvas.height);
     livello.disegnaLivello();
+    pavimento.disegna();
     personaggio.disegna();
 }
 /**
@@ -298,16 +367,4 @@ function percentualeHeight(percento){
 }
 
 function test(){
-    let r=setInterval(()=>{personaggio.muovi(5);},500);
-    setTimeout(()=>{
-        clearInterval(r);
-    },10000);
-    r=setInterval(()=>{personaggio.muovi(-5);},500);
-    setTimeout(()=>{
-        clearInterval(r);
-    },10000);
-    r=setInterval(()=>{personaggio.salta(-5);},500);
-    setTimeout(()=>{
-        clearInterval(r);
-    },10000);
 }
