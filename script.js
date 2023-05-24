@@ -147,7 +147,7 @@ class Personaggio extends Elemento{
         super(x,y);
         this.velocitaX=0;
         this.velocitaY=0;
-        this.lunghezza=80;
+        this.lunghezza=percentualeWidth(5);
         this.altezza=percentualeHeight(15);
         this.#inAria=false;
         this.#immagine=new Image();
