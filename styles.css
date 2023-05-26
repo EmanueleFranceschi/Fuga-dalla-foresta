@@ -10,9 +10,18 @@ table{border-color: black;}
     display: block;
     width: 900px;
 }*/
+@font-face {
+    font-family: myFont;
+    src: url(SuperGame-X3Rz9.ttf);
+}
+
+.text{
+    font-family: myFont;
+}
+
 .menu{
     
-    zoom: 250%;
+    zoom: 200%;
     
 }
 a{
@@ -20,7 +29,7 @@ a{
 }
 
 .h1{
-    color: green;
+    color: rgb(0, 128, 0);
     text-shadow:
     0 0 7px black,
     0 0 10px green,
@@ -31,15 +40,21 @@ a{
     /*0 0 102px green,*/
     0 0 0px green;
 
-    
+    zoom: 200%;
 }
-.h2{
+/*.h2{ Roccia perche
     margin-left: 100px;
     width: 50%;
+}*/
+
+.helpText{
+    color: rgb(255, 255, 255);
+    text-shadow: 2px 2px 5px rgb(255, 255, 255);
+    zoom: 80%;
 }
 
 .membri{
-    zoom: 65%;
+    zoom: 95%;
     color: rgb(255, 255, 255);
     text-shadow:
     0 0 7px black,
@@ -123,7 +138,7 @@ footer {
 
 @media only screen and (max-width: 768px) { /*600px solo telefoni*/
     .menu{
-        zoom: 200%;
+        zoom: 180%;
         
     }
     .navbar{
