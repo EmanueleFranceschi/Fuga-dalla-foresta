@@ -152,7 +152,7 @@ class Personaggio extends Elemento{
         this.#inAria=false;
         this.#immagine=new Image();
         this.#immagine.src="characters/runner/Idle__000.png";
-        this.#vita=2;
+        this.#vita=1;
     }
 
     get velocitaX(){
@@ -183,12 +183,23 @@ class Personaggio extends Elemento{
         this.#altezza=altezza;
     }
     set vita(vita){
-        return this.#vita;
+        this.#vita=vita;
+        if(this.vita==0)
+            morte();
+    }
+    set immagine(immagine){
+        this.#immagine.src=immagine;
     }
     /**
      * Muove il personaggio.
      */
     muovi(){
+        if(this.velocitaX>0 && this.velocitaY==0)
+            personaggio.immagine="characters/runner/RunRight.png";
+        else if(this.velocitaX<0 && this.velocitaY==0)
+            personaggio.immagine="characters/runner/RunLeft.png";
+        else if(this.velocitaY!=0)
+            personaggio.immagine="characters/runner/Jump__004.png";
         if(!this.collisione()){
             this.x+=this.velocitaX;
         }
@@ -280,13 +291,45 @@ class Personaggio extends Elemento{
     disegna(){
         if(this.velocitaX!=0 || this.velocitaY!=0)
             this.muovi();
+        else
+            this.immagine="characters/runner/Idle__000.png";
         if(this.#immagine.complete)
             context.drawImage(this.#immagine,this.x,this.y,this.lunghezza,this.altezza);
     }
 }
 class Ostacolo extends Elemento{
-    disegna(){
+    #lunghezza;
+    #altezza;
+    /**
+     * Classe che rappresenta gli ostacoli.
+     * @constructor
+     * @param {} x 
+     * @param {*} y 
+     * @param {*} lunghezza 
+     * @param {*} altezza 
+     */
+    constructor(x,y,lunghezza,altezza){
+        super(x,y);
+        this.lunghezza=lunghezza;
+        this.altezza=altezza;
+    }
 
+    get lunghezza(){
+        return this.#lunghezza;
+    }
+    get altezza(){
+        return this.#altezza;
+    }
+    set lunghezza(lunghezza){
+        this.#lunghezza=lunghezza;
+    }
+    set altezza(altezza){
+        this.#altezza=altezza;
+    }
+
+    disegna(){
+        context.fillStyle="rgb(0,255,0)";
+        context.fillRect(this.x,this.y,this.lunghezza,this.altezza);
     }
 }
 
@@ -313,6 +356,7 @@ function gioca(){
     pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),canvas.width,percentualeHeight(20),"rgb(93, 222, 38)");
     //aggiungo piattaforme
     livello.addElemento(new Piattaforma(400,700,200,15,"rgb(31, 0, 156)"));
+    livello.addElemento(new Ostacolo(500,pavimento.y-50,30,50));
     //creo il personaggio
     personaggio=new Personaggio(percentualeWidth(5),pavimento.y-percentualeHeight(15));
     //ogni 10 millisecondi il canvas viene ridisegnato
@@ -320,15 +364,15 @@ function gioca(){
     //gestisco i controlli
     window.addEventListener("keydown", function(event){
         switch (event.code){
-        case "KeyD": case "ArrowRight":
+        case "KeyD": case "ArrowRight":{
             personaggio.velocitaX=4;
-            break;
-        case "KeyA": case "ArrowLeft":
+        }break;
+        case "KeyA": case "ArrowLeft":{
             personaggio.velocitaX=-4;
-            break;
-        case "KeyW": case "ArrowUp":
+        }break;
+        case "KeyW": case "ArrowUp":{
             personaggio.gravita(-15);
-            break;
+        }break;
         }
     },false);
     window.addEventListener("keyup", function(event){
@@ -365,6 +409,16 @@ function percentualeWidth(percento){
 function percentualeHeight(percento){
     return canvas.height/100*percento;
 }
-
-function test(){
+/**
+ * Resetta la pagina di gioco.
+ */
+function morte(){
+    personaggio.immagine="characters/runner/Dead__009.png";
+    personaggio.disegna();
+    clearInterval(riferimento);
+    setTimeout(()=>{
+        canvas.hidden=true;
+        document.getElementById("div").hidden=false;
+        document.getElementById("div").innerHTML='<h1 class="centerText h1">Hai perso!</h1><br><input class="centerImg buttonMenu" type="button" value="Gioca" onclick="gioca()">';
+    },1000)
 }
