@@ -128,7 +128,8 @@ class Piattaforma extends Elemento{
         context.fillRect(this.x,this.y,this.lunghezza,this.altezza);
     }
 }
-
+let decrVita=0;
+let contCollisione=0;
 class Personaggio extends Elemento{
     #velocitaX;
     #velocitaY;
@@ -152,7 +153,8 @@ class Personaggio extends Elemento{
         this.#inAria=false;
         this.#immagine=new Image();
         this.#immagine.src="characters/runner/Idle__000.png";
-        this.#vita=1;
+        this.#vita=3;
+        decrVita=this.vita;
     }
 
     get velocitaX(){
@@ -170,6 +172,12 @@ class Personaggio extends Elemento{
     get vita(){
         return this.#vita;
     }
+    get inAria(){
+        return this.#inAria;
+    }
+    set inAria(inAria){
+        this.#inAria=inAria;
+    }
     set velocitaX(velocitaX){
         this.#velocitaX=velocitaX;
     }
@@ -184,7 +192,7 @@ class Personaggio extends Elemento{
     }
     set vita(vita){
         this.#vita=vita;
-        if(this.vita==0)
+        if(this.vita<decrVita)
             morte();
     }
     set immagine(immagine){
@@ -253,7 +261,11 @@ class Personaggio extends Elemento{
                         this.x=livello.getElemento(i).x+livello.getElemento(i).lunghezza;
                     return true;
                 }else if(livello.getElemento(i) instanceof Ostacolo){
-                    this.vita--;
+                    contCollisione++;
+                    if(contCollisione==1)
+                        decrVita=this.vita;
+                        this.vita--;
+                    
                     return true;
                 }
             }
@@ -277,8 +289,12 @@ class Personaggio extends Elemento{
                     this.y=livello.getElemento(i).y-this.#altezza;
                     return true;
                 }else if(livello.getElemento(i) instanceof Ostacolo){
-                    this.vita--;
+                    contCollisione++;
+                    if(contCollisione==1)
+                        this.vita--;
+                    
                     return true;
+                    
                 }
             }
         }
@@ -289,8 +305,12 @@ class Personaggio extends Elemento{
      * Disegna il personaggio nel canvas.
      */
     disegna(){
+        console.log("vita: "+this.vita);
+        console.log("vitaDecr: "+decrVita);
         if(this.velocitaX!=0 || this.velocitaY!=0)
             this.muovi();
+        else if(this.vita<decrVita)
+            this.immagine="characters/runner/Dead__004.png";
         else
             this.immagine="characters/runner/Idle__000.png";
         if(this.#immagine.complete)
@@ -413,12 +433,34 @@ function percentualeHeight(percento){
  * Resetta la pagina di gioco.
  */
 function morte(){
-    personaggio.immagine="characters/runner/Dead__009.png";
-    personaggio.disegna();
-    clearInterval(riferimento);
+    intervalPersonaggioFermo=setInterval(personaggioFermo, 0,1);
+
     setTimeout(()=>{
-        canvas.hidden=true;
+        console.log("mortevita:"+personaggio.vita)
+        if(personaggio.vita==0){
+            canvas.hidden=true;
         document.getElementById("div").hidden=false;
-        document.getElementById("div").innerHTML='<h1 class="centerText h1">Hai perso!</h1><br><input class="centerImg buttonMenu" type="button" value="Gioca" onclick="gioca()">';
+        document.getElementById("div").innerHTML='<h1 class="centerText h1">GAME OVER!</h1><br><input class="centerImg buttonMenu" type="button" value="Home" onclick="">';
+        }else{
+            canvas.hidden=true;
+        document.getElementById("div").hidden=false;
+        document.getElementById("div").innerHTML='<h1 class="centerText h1">Hai perso!</h1><br><input class="centerImg buttonMenu" type="button" value="Gioca" onclick="riGioca()">';
+        }
     },1000)
+}
+function personaggioFermo(){
+    personaggio.velocitaX=0;
+    personaggio.velocitaY=0;
+    personaggio.inAria=true;
+}
+function riGioca(){
+    decrVita=personaggio.vita;
+    personaggio.inAria=false;
+
+    clearInterval(intervalPersonaggioFermo);
+    document.getElementById("div").hidden=true;
+    personaggio.x=percentualeWidth(5);
+    personaggio.y=pavimento.y-percentualeHeight(15);
+
+    canvas.hidden=false;
 }
