@@ -7,7 +7,7 @@
 	Scroll
 	✔️sfondo/ambientazione
 	power-up
-	morte
+	✔️morte
 	vittoria/fine livello
 	monete
 -livelli
