@@ -75,7 +75,7 @@ class Livello{
 class Piattaforma extends Elemento{
     #lunghezza;
     #altezza;
-    #colore;
+    #immagine;
     /**
      * Classe che rappresenta piattaforme dove il personaggio ed i nemici possono stare in piedi.
      * @constructor
@@ -85,11 +85,12 @@ class Piattaforma extends Elemento{
      * @param {int} altezza quanti pixel è alta la piattaforma
      * @param {string} colore il colore della piattaforma
      */
-    constructor (x,y,lunghezza,altezza,colore){
+    constructor (x,y,lunghezza,altezza,immagine){
         super(x,y);
         this.altezza=altezza;
         this.lunghezza=lunghezza;
-        this.colore=colore;
+        this.#immagine=new Image();
+        this.#immagine.src=immagine;
     }
     
     get lunghezza(){
@@ -98,10 +99,6 @@ class Piattaforma extends Elemento{
 
     get altezza(){
         return this.#altezza;
-    }
-
-    get colore(){
-        return this.#colore;
     }
     
     set lunghezza (lunghezza){
@@ -116,16 +113,16 @@ class Piattaforma extends Elemento{
         this.#altezza=altezza;
     }
 
-    set colore (colore){
-        this.#colore=colore;
+    set immagine(immagine){
+        this.#immagine.src=immagine;
     }
 
     /**
      * Disegna la piattaforma nel canvas.
      */
     disegna(){
-        context.fillStyle=this.colore;
-        context.fillRect(this.x,this.y,this.lunghezza,this.altezza);
+        if(this.#immagine.complete)
+            context.drawImage(this.#immagine,this.x,this.y,this.lunghezza,this.altezza);
     }
 }
 let decrVita=0;
@@ -320,6 +317,7 @@ class Personaggio extends Elemento{
 class Ostacolo extends Elemento{
     #lunghezza;
     #altezza;
+    #immagine;
     /**
      * Classe che rappresenta gli ostacoli.
      * @constructor
@@ -328,10 +326,12 @@ class Ostacolo extends Elemento{
      * @param {*} lunghezza 
      * @param {*} altezza 
      */
-    constructor(x,y,lunghezza,altezza){
+    constructor(x,y,lunghezza,altezza,immagine){
         super(x,y);
         this.lunghezza=lunghezza;
         this.altezza=altezza;
+        this.#immagine=new Image();
+        this.#immagine.src=immagine;
     }
 
     get lunghezza(){
@@ -346,10 +346,13 @@ class Ostacolo extends Elemento{
     set altezza(altezza){
         this.#altezza=altezza;
     }
+    set immagine(immagine){
+        this.#immagine.src=immagine;
+    }
 
     disegna(){
-        context.fillStyle="rgb(0,255,0)";
-        context.fillRect(this.x,this.y,this.lunghezza,this.altezza);
+        if(this.#immagine.complete)
+            context.drawImage(this.#immagine,this.x,this.y,this.lunghezza,this.altezza);
     }
 }
 
@@ -360,6 +363,7 @@ let livello;
 let personaggio;
 let sfondo;
 let pavimento;
+let ostacolo;
 function gioca(){
     //rendo il canvas visibile
     canvas = document.getElementById('id');
@@ -373,10 +377,17 @@ function gioca(){
     //creo il livello
     livello=new Livello();
     //creo il pavimento
-    pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),canvas.width,percentualeHeight(20),"rgb(93, 222, 38)");
+    pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),canvas.width,percentualeHeight(20),"platforms/png/Tiles/2.png");
     //aggiungo piattaforme
-    livello.addElemento(new Piattaforma(400,700,200,15,"rgb(31, 0, 156)"));
-    livello.addElemento(new Ostacolo(500,pavimento.y-50,30,50));
+
+    livello.addElemento(new Piattaforma(1,430,100,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Piattaforma(400,500,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Ostacolo(700,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Piattaforma(800,600,200,25,"platforms/png/Tiles/14.png"));
+    //livello.addElemento(new Ostacolo(800,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    //livello.addElemento(new Ostacolo(900,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Ostacolo(1100,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+
     //creo il personaggio
     personaggio=new Personaggio(percentualeWidth(5),pavimento.y-percentualeHeight(15));
     //ogni 10 millisecondi il canvas viene ridisegnato
@@ -412,6 +423,7 @@ function render(){
     livello.disegnaLivello();
     pavimento.disegna();
     personaggio.disegna();
+    
 }
 /**
  * Calcola una percentuale della width del canvas in pixel.
@@ -440,7 +452,7 @@ function morte(){
         if(personaggio.vita==0){
             canvas.hidden=true;
         document.getElementById("div").hidden=false;
-        document.getElementById("div").innerHTML='<h1 class="centerText h1">GAME OVER!</h1><br><input class="centerImg buttonMenu" type="button" value="Home" onclick="">';
+        document.getElementById("div").innerHTML=`<h1 class="centerText h1">GAME OVER!</h1><br><input class="centerImg buttonMenu" type="button" value="Home" onclick="window.location.href='index.html'">`;
         }else{
             canvas.hidden=true;
         document.getElementById("div").hidden=false;
