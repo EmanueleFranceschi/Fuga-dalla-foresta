@@ -83,7 +83,7 @@ class Piattaforma extends Elemento{
      * @param {int} y 
      * @param {int} lunghezza quanti pixel è lunga la piattaforma
      * @param {int} altezza quanti pixel è alta la piattaforma
-     * @param {string} colore il colore della piattaforma
+     * @param {string} immagine l'immagine della piattaforma
      */
     constructor (x,y,lunghezza,altezza,immagine){
         super(x,y);
@@ -325,6 +325,7 @@ class Ostacolo extends Elemento{
      * @param {*} y 
      * @param {*} lunghezza 
      * @param {*} altezza 
+     * @param {*} immagine 
      */
     constructor(x,y,lunghezza,altezza,immagine){
         super(x,y);
@@ -378,7 +379,7 @@ function gioca(){
     livello=new Livello();
     //creo il pavimento
     pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),canvas.width,percentualeHeight(20),"platforms/png/Tiles/2.png");
-    //aggiungo piattaforme
+    //aggiungo piattaforme e nemici
 
     livello.addElemento(new Piattaforma(1,430,100,25,"platforms/png/Tiles/14.png"));
     livello.addElemento(new Piattaforma(400,500,200,25,"platforms/png/Tiles/14.png"));
