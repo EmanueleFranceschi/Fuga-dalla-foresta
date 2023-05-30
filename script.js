@@ -314,6 +314,66 @@ class Personaggio extends Elemento{
             context.drawImage(this.#immagine,this.x,this.y,this.lunghezza,this.altezza);
     }
 }
+
+class Powerup{
+    #icona;
+    #sparito;
+    #x;
+    #y;
+
+    /**
+     * Classe che rappresenta i power ups raccoglibili dall'Avventuriero
+     * @constructor
+     * @param {Image} icona
+     * @param {boolean} sparito
+     */
+    constructor(icona,x,y){
+        this.icona=icona;
+        this.sparito=false;
+        this.#x=x;
+        this.#y=y;
+    }
+
+    set sparito(sparito){
+        this.#sparito=sparito;
+    }
+
+    get sparito(){
+        return this.#sparito;
+    }
+
+    get icona(){
+        return this.#icona;
+    }
+
+    set icona(icona){
+        this.#icona=icona;
+    }
+
+    get x(){
+        return this.#x;
+    }
+
+    set x(x){
+        this.#x=x;
+    }
+
+    get y(){
+        return this.#y;
+    }
+
+    set y(y){
+        this.#y=y;
+    }
+
+    disegna(stella,cuore,teschio,interrogativo){
+        context.drawImage(teschio,x,y);
+        context.drawImage(cuore,x,y);
+        context.drawImage(stella,x,y);
+        context.drawImage(interrogativo,x,y);
+    }
+}
+
 class Ostacolo extends Elemento{
     #lunghezza;
     #altezza;
@@ -389,6 +449,12 @@ function gioca(){
     //livello.addElemento(new Ostacolo(900,pavimento.y-50,30,50,"characters/enemies/snake.png"));
     livello.addElemento(new Ostacolo(1100,pavimento.y-50,30,50,"characters/enemies/snake.png"));
 
+    //Creo le icone dei power up
+    iconaStella=new Powerup("/icons/Icon_Star.png",1000,500);
+    iconaTeschio=new Powerup("/icons/Icon_Skull.png",400,100);
+    iconaCuore=new Powerup("/icons/Icon_Heart",400,300);
+    iconaInterrogativo=new Powerup("/icons/Icon_Question.png",100,600);
+    
     //creo il personaggio
     personaggio=new Personaggio(percentualeWidth(5),pavimento.y-percentualeHeight(15));
     //ogni 10 millisecondi il canvas viene ridisegnato
