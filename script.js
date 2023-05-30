@@ -124,6 +124,29 @@ class Piattaforma extends Elemento{
         if(this.#immagine.complete)
             context.drawImage(this.#immagine,this.x,this.y,this.lunghezza,this.altezza);
     }
+
+    muoviSfondo(){
+        if(Personaggio.x<=700){
+            Personaggio.velocitaX=4;
+        }
+        else{
+            if(Personaggio.x>=100){
+                Personaggio.velocitaX=-4;
+            }
+            else{
+                Personaggio.velocitaY=0;
+    
+                if(Personaggio.velocitaX==0 && Personaggio.velocitaY==0 && Personaggio.x==700){
+                    this.x-=4;
+                }
+                else{
+                    if(Personaggio.velocitaX==0 && Personaggio.velocitaY==0 && Personaggio.x==200){
+                        this.x+=4;
+                    }
+                }
+            }
+        }
+    }
 }
 let decrVita=0;
 let contCollisione=0;
@@ -315,11 +338,9 @@ class Personaggio extends Elemento{
     }
 }
 
-class Powerup{
+class Powerup extends Elemento{
     #icona;
     #sparito;
-    #x;
-    #y;
 
     /**
      * Classe che rappresenta i power ups raccoglibili dall'Avventuriero
@@ -328,10 +349,9 @@ class Powerup{
      * @param {boolean} sparito
      */
     constructor(icona,x,y){
+        super(x,y);
         this.icona=icona;
         this.sparito=false;
-        this.#x=x;
-        this.#y=y;
     }
 
     set sparito(sparito){
@@ -350,27 +370,10 @@ class Powerup{
         this.#icona=icona;
     }
 
-    get x(){
-        return this.#x;
-    }
-
-    set x(x){
-        this.#x=x;
-    }
-
-    get y(){
-        return this.#y;
-    }
-
-    set y(y){
-        this.#y=y;
-    }
-
-    disegna(stella,cuore,teschio,interrogativo){
-        context.drawImage(teschio,x,y);
-        context.drawImage(cuore,x,y);
-        context.drawImage(stella,x,y);
-        context.drawImage(interrogativo,x,y);
+    disegna(){
+        if(this.#icona.complete){
+            context.drawImage(this.#icona,this.x,this.y);
+        }
     }
 }
 
@@ -381,11 +384,11 @@ class Ostacolo extends Elemento{
     /**
      * Classe che rappresenta gli ostacoli.
      * @constructor
-     * @param {} x 
-     * @param {*} y 
-     * @param {*} lunghezza 
-     * @param {*} altezza 
-     * @param {*} immagine 
+     * @param {int} x 
+     * @param {int} y 
+     * @param {int} lunghezza 
+     * @param {int} altezza 
+     * @param {Image} immagine 
      */
     constructor(x,y,lunghezza,altezza,immagine){
         super(x,y);
@@ -425,6 +428,10 @@ let personaggio;
 let sfondo;
 let pavimento;
 let ostacolo;
+let p1;
+let p2;
+let p3;
+
 function gioca(){
     //rendo il canvas visibile
     canvas = document.getElementById('id');
@@ -441,24 +448,35 @@ function gioca(){
     pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),canvas.width,percentualeHeight(20),"platforms/png/Tiles/2.png");
     //aggiungo piattaforme e nemici
 
-    livello.addElemento(new Piattaforma(1,430,100,25,"platforms/png/Tiles/14.png"));
-    livello.addElemento(new Piattaforma(400,500,200,25,"platforms/png/Tiles/14.png"));
+    p1=new Piattaforma(1,430,100,25,"platforms/png/Tiles/14.png");
+    p2=new Piattaforma(400,500,200,25,"platforms/png/Tiles/14.png");
+    p3=new Piattaforma(800,600,200,25,"platforms/png/Tiles/14.png");
+    livello.addElemento(p1);
+    livello.addElemento(p2);
     livello.addElemento(new Ostacolo(700,pavimento.y-50,30,50,"characters/enemies/snake.png"));
-    livello.addElemento(new Piattaforma(800,600,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(p3);
     //livello.addElemento(new Ostacolo(800,pavimento.y-50,30,50,"characters/enemies/snake.png"));
     //livello.addElemento(new Ostacolo(900,pavimento.y-50,30,50,"characters/enemies/snake.png"));
     livello.addElemento(new Ostacolo(1100,pavimento.y-50,30,50,"characters/enemies/snake.png"));
 
     //Creo le icone dei power up
-    iconaStella=new Powerup("/icons/Icon_Star.png",1000,500);
-    iconaTeschio=new Powerup("/icons/Icon_Skull.png",400,100);
-    iconaCuore=new Powerup("/icons/Icon_Heart",400,300);
-    iconaInterrogativo=new Powerup("/icons/Icon_Question.png",100,600);
+    iconaStella=new Powerup("icons/Icon_Star.png",1000,500);
+    iconaTeschio=new Powerup("icons/Icon_Skull.png",400,100);
+    iconaCuore=new Powerup("icons/Icon_Heart",400,300);
+    iconaInterrogativo=new Powerup("icons/Icon_Question.png",100,600);
+
+    livello.addElemento(iconaStella);
+    livello.addElemento(iconaTeschio);
+    livello.addElemento(iconaCuore);
+    livello.addElemento(iconaInterrogativo);
     
     //creo il personaggio
     personaggio=new Personaggio(percentualeWidth(5),pavimento.y-percentualeHeight(15));
     //ogni 10 millisecondi il canvas viene ridisegnato
     riferimento=setInterval(render, 10);
+    setInterval(p1.muoviSfondo(),10);
+    setInterval(p2.muoviSfondo(),10);
+    setInterval(p3.muoviSfondo(),10);
     //gestisco i controlli
     window.addEventListener("keydown", function(event){
         switch (event.code){
@@ -490,7 +508,6 @@ function render(){
     livello.disegnaLivello();
     pavimento.disegna();
     personaggio.disegna();
-    
 }
 /**
  * Calcola una percentuale della width del canvas in pixel.
