@@ -2,8 +2,8 @@
 -Interfaccia gioco
 -gioco:
 	✔️Personaggio
-	Piattaforme (bug:non si puo passare sotto)
-	Ostacoli (mancano quelli in movimento)
+	✔️Piattaforme (bug:non si puo passare sotto)
+	✔️Ostacoli (mancano quelli in movimento)
 	Scroll
 	✔️sfondo/ambientazione
 	power-up
@@ -11,11 +11,12 @@
 	vittoria/fine livello
 	monete
 	Suoni
--livelli
--Opzioni
--Classifica
+	livelli
+✔️-login/interfaccia per account
+✔️-Opzioni(manca js per il suono)
+✔️-Classifica (inserito solo un img dove andranno messi i nomi tramite il database)
+✔️-help( mobile: roccia devi farle leggermente piu corte le help, senno aggiusto io lo sfondo)
 ✔️-Crediti
--interfaccia per account
--interfaccia livelli
+✔️-interfaccia livelli (manca effettivamente fare i livelli)
 ✔️-Responsive menu
 -Responsive Gioco

@@ -59,7 +59,7 @@ a{
 }*/
 
 .helpText{
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     text-shadow: 2px 2px 5px rgb(255, 255, 255);
     zoom: 80%;
 }
@@ -87,7 +87,7 @@ a{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 15%;
+    
 }
 .buttonMenu {
     /*background-color: #efb281;*/
@@ -97,7 +97,7 @@ a{
     padding: 15px 32px;
     font-size: 16px;
     border-radius: 12px;
-    border: 2.5px solid green;
+    border: 4.5px solid green;
     text-align: center;
     padding: 15px;
     line-height: 0px; 
@@ -168,6 +168,100 @@ footer {
      
 }
 
+.TableWithHome{
+    position: relative;/* far si che i bottoni si possano spostare sul css tramite right,left,ecc. ma allo stesso tempo che rimangano allineati al centro seguendo l'allineamento dei bottoni*/
+    right: 150px;
+
+    zoom: 35%;
+
+    text-align: center;
+    display: flex;
+    max-width: 110px;
+    width: 300%;
+     
+}
+
+.slidecontainer {
+    width: 100%; /* Width of the outside container */
+}
+  
+  /* The slider itself */
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 50%; /* Full-width */
+    height: 10px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+  
+  /* Mouse-over effects */
+.slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+  
+  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 20px; /* Set a specific slider handle width */
+    height: 20px; /* Slider handle height */
+    background: rgb(0, 128, 0); /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+  
+.slider::-moz-range-thumb {
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: rgb(0, 128, 0); /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+
+.optionsText{
+    color: rgb(255, 255, 255);
+    text-shadow:
+    0 0 7px green,
+    0 0 10px rgb(0, 128, 0),
+    0 0 21px rgb(0, 128, 0),
+    0 0 42px rgb(0, 128, 0),
+    /*0 0 82px green,*/
+    /*0 0 92px green,*/
+    /*0 0 102px green,*/
+    0 0 0px rgb(0, 128, 0);
+}
+
+.scoreBoard{
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.textScoreBoard{
+    position: absolute;
+    top:20%;
+    left:35%;
+    transform: translate(-50%, -50%);
+}
+
+.livelli{
+    width:98%; 
+    margin:1%;
+}
+
+.tableLivelli{
+    text-align:center; 
+    margin-left:auto; 
+    margin-right:auto; 
+    width:100px;
+}
+
+.buttonLivelli{
+    width: 100%;
+}
+
 
 @media only screen and (max-height: 725px) { 
     .menu{
@@ -196,7 +290,7 @@ footer {
 
 @media only screen and (max-width: 768px) { /*600px solo telefoni*/
     .menu{
-        zoom: 180%;
+        zoom: 153%;
         
     }
     .navbar{

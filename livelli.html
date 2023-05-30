@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Crediti</title>
-        
+        <title>Livelli</title>
+
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="styles.css">
         <script src="script.js"></script>
@@ -47,19 +47,40 @@
             </table>
 
             <br>
-
-            <p class="centerText text h1">Team sviluppo:</p>
-            <br>
-            <p class="centerText text membri">Mattia Desiderio</p>
-            <br>
-            <p class="centerText text membri">Marco Roccia</p>
-            <br>
-            <p class="centerText text membri">Niccolo' Russo</p>
-            <br>
-            <p class="centerText text membri">Emanuele Franceschi</p>
-            <br>
             
+            <p class="centerText text h1">Select Level</p>
+
+            <br>
+
+            <div class="centerImg livelli">
+                <table class="tableLivelli">
+                
+                    <tr>
+                        <th>
+                            <input class="buttonLivelli text buttonMenu" type="button" value="1" onclick="gioca()">
+                            
+                        </th>
+    
+                        <th>
+                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>
+                        </th>
+    
+                        <th>
+                            <input class="buttonLivelli centerImg text buttonMenu" type="button" value="2" onclick="window.location.href='livelli.html';">
+                            
+                        </th>
+    
+                        <th>
+                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>
+                        </th>
+    
+                        <th>
+                            <input class="buttonLivelli centerImg text buttonMenu" type="button" value="3" onclick="window.location.href='livelli.html';">
+                        </th>
+                    </tr>
+                </table>
+            </div>
         </div>
-        
+        <canvas  id="id" width="1500" hidden="true"></canvas>
     </body>
 </html>
