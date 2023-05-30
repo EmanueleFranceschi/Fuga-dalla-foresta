@@ -42,16 +42,16 @@ a{
     color: rgb(0, 128, 0);
     text-shadow:
     0 0 7px black,
-    0 0 10px green,
-    0 0 21px green,
-    0 0 42px green,
+    0 0 10px rgb(0, 0, 0),
+    0 0 21px rgb(0, 0, 0),
+    0 0 42px rgb(0, 0, 0),
     /*0 0 82px green,*/
     /*0 0 92px green,*/
     /*0 0 102px green,*/
-    0 0 0px green;
+    0 0 0px rgb(0, 0, 0);
 
     zoom: 200%;
-    margin-right: 70%;
+    
 }
 /*.h2{ Roccia perche
     margin-left: 100px;
@@ -105,10 +105,11 @@ a{
     display: block;  
     max-width: 110px;
     width: 300%;/* grandezza bottoni e testo all'interno immobili*/
+    
 
     transition-duration: 0.4s;
 
-    margin-right: 80%;/*bottoni a sinistra*/
+    
 }
 
 .buttonIndietro{
@@ -151,8 +152,42 @@ footer {
     width: 80px;
     height: auto;
     display: block;
-    margin-top: 1px;
-    margin-left: 95.5%;
+    
+}
+
+.Table{
+    position: relative;/* far si che i bottoni si possano spostare sul css tramite right,left,ecc. ma allo stesso tempo che rimangano allineati al centro seguendo l'allineamento dei bottoni*/
+    right: 100px;
+
+    zoom: 35%;
+
+    text-align: center;
+    display: flex;
+    max-width: 110px;
+    width: 300%;
+     
+}
+
+
+@media only screen and (max-height: 725px) { 
+    .menu{
+        zoom: 180%;
+    }
+}
+
+@media only screen and (max-height: 562px) { 
+    .menu{
+        zoom: 140%;
+    }
+    .h1{
+        zoom: 140%;
+    }
+}
+
+@media only screen and (max-height: 440px) { 
+    .menu{
+        zoom: 100%;
+    }
 }
 
 
@@ -167,49 +202,11 @@ footer {
     .navbar{
         zoom: normal;
     }
-    .h1{
-        margin-right: 0px;
-    }
-    .buttonMenu{
-        margin-right: 40%;
-    }
 }
 
-@media only screen and (max-width: 700px) { /*600px solo telefoni*/
-    .h1{
-        margin-right: 0px;
-    }
-    .buttonMenu{
-        margin-right: 35%;
-    }
-}
 
-@media only screen and (max-width: 591px) { /*600px solo telefoni*/
-    .h1{
-        margin-right: 0px;
-    }
-    .buttonMenu{
-        margin-right: 30%;
-    }
-}
 
-@media only screen and (max-width: 414px) { /*600px solo telefoni*/
-    .h1{
-        margin-right: 0px;
-    }
-    .buttonMenu{
-        margin-right: 24%;
-    }
-}
 
-@media only screen and (max-width: 363px) { /*600px solo telefoni*/
-    .h1{
-        margin-right: 0px;
-    }
-    .buttonMenu{
-        margin-right: 18%;
-    }
-}
 
 .buttonMenu:hover {
     background-color: green; /* Green */
