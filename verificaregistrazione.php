@@ -24,6 +24,7 @@
             $ok = $conn->query($query_insert);
             if(!$ok){
                 echo "<h1>Errore durante l'inserimento <a href=\"registrazione.php\"> torna alla registrazione </a></h1>";
+                header('Location: login.php');
             }else{
                 echo "<h1>Inserimento effetuato<a href=\"login.php\"> torna alla login </a></h1>";
             }
