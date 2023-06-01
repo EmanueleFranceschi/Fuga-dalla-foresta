@@ -196,6 +196,7 @@ class Personaggio extends Elemento{
     set vita(vita){
         this.#vita=vita;
         if(this.vita<decrVita)
+        console.log("set"+this.vita+" "+decrVita)
             morte();
     }
     set immagine(immagine){
@@ -270,9 +271,12 @@ class Personaggio extends Elemento{
                     return true;
                 }else if(livello.getElemento(i) instanceof Ostacolo){
                     contCollisione++;
-                    if(contCollisione==1)
+                    console.log("a"+contCollisione)
+                    if(contCollisione==1){
                         decrVita=this.vita;
                         this.vita--;
+                    }
+                        
                     
                     return true;
                 }else if(livello.getElemento(i) instanceof Fine){
@@ -302,9 +306,12 @@ class Personaggio extends Elemento{
                     return true;
                 }else if(livello.getElemento(i) instanceof Ostacolo){
                     contCollisione++;
-                    if(contCollisione==1)
+                    console.log("b"+contCollisione)
+                    if(contCollisione==1){
                         decrVita=this.vita;
                         this.vita--;
+                    }
+                        
                     
                     return true;
                 }
@@ -458,15 +465,17 @@ let livello;
 let personaggio;
 let sfondo;
 let pavimento;
+let water;
 let decrVita=0;
 let contCollisione=0;
 /**
  * Setup iniziale per il gioco
  */
-function gioca(){
+function gioca(lvl){
     //rendo il canvas visibile
     canvas = document.getElementById('id');
     context = canvas.getContext('2d');
+    document.getElementById("divCanvas").hidden=false;
     canvas.hidden=false;
     document.getElementById("div").hidden=true;
     canvas.height=canvas.width*0.6;
@@ -475,26 +484,20 @@ function gioca(){
     sfondo.src="platforms/png/BG/BG.png";
     //creo il livello
     livello=new Livello();
-    //creo il pavimento
-    pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),3000,percentualeHeight(20),"platforms/png/Tiles/2.png");
-    //aggiungo piattaforme e nemici
-    livello.addElemento(new Piattaforma(400,500,200,25,"platforms/png/Tiles/14.png"));
-    livello.addElemento(new Ostacolo(700,pavimento.y-50,30,50,"characters/enemies/snake.png"));
-    livello.addElemento(new Piattaforma(800,600,200,25,"platforms/png/Tiles/14.png"));
-    livello.addElemento(new Ostacolo(1100,pavimento.y-50,30,50,"characters/enemies/snake.png"));
-    livello.addElemento(new Ostacolo(1470,550,30,50,"characters/enemies/snake.png"));
-    livello.addElemento(new Piattaforma(1400,600,200,25,"platforms/png/Tiles/14.png"));
-    livello.addElemento(new Piattaforma(1600,450,200,25,"platforms/png/Tiles/14.png"));
     
-    livello.addElemento(new Ostacolo(1850,pavimento.y-50,30,50,"characters/enemies/snake.png"));
-    livello.addElemento(new Ostacolo(1900,pavimento.y-50,30,50,"characters/enemies/snake.png"));
-    livello.addElemento(new Ostacolo(1950,pavimento.y-50,30,50,"characters/enemies/snake.png"));
-    livello.addElemento(new Ostacolo(2000,pavimento.y-50,30,50,"characters/enemies/snake.png"));
-    livello.addElemento(new Piattaforma(2100,600,200,25,"platforms/png/Tiles/14.png"));
-    livello.addElemento(new Piattaforma(2300,500,200,25,"platforms/png/Tiles/14.png"));
-    livello.addElemento(new Piattaforma(2500,400,200,25,"platforms/png/Tiles/14.png"));
-    livello.addElemento(new Fine(pavimento.lunghezza-100,percentualeHeight(20),20,pavimento.y-percentualeHeight(20)));
 
+    if(lvl==1){
+        setLivello1();
+    }else if(lvl==2){
+        setLivello2()
+    }else{
+        setLivello3();
+    }
+        
+
+
+
+    
     /*//Creo le icone dei power up
     iconaStella=new Powerup("icons/Icon_Star.png",1000,500);
     iconaTeschio=new Powerup("icons/Icon_Skull.png",400,100);
@@ -514,6 +517,102 @@ function gioca(){
     window.addEventListener("keydown", controlliMosse ,true);
     window.addEventListener("keyup", fermaMosse ,true);
 }
+
+function setLivello1(){
+    //creo il pavimento
+    pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),3000,percentualeHeight(20),"platforms/png/Tiles/2.png");
+    //aggiungo piattaforme e nemici
+    livello.addElemento(new Piattaforma(400,500,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Ostacolo(700,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Piattaforma(800,600,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Ostacolo(1100,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Ostacolo(1470,550,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Piattaforma(1400,600,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Piattaforma(1600,450,200,25,"platforms/png/Tiles/14.png"));
+    
+    livello.addElemento(new Ostacolo(1850,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Ostacolo(1900,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Ostacolo(1950,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Ostacolo(2000,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Piattaforma(2100,600,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Piattaforma(2300,500,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Piattaforma(2500,400,200,25,"platforms/png/Tiles/14.png"));
+    
+    livello.addElemento(new Fine(pavimento.lunghezza-100,percentualeHeight(20),20,pavimento.y-percentualeHeight(20)));
+}
+
+function setLivello2(){
+    //creo il pavimento
+    pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),3000,percentualeHeight(20),"platforms/png/Tiles/2.png");
+    //aggiungo piattaforme e nemici
+    livello.addElemento(new Piattaforma(400,500,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Piattaforma(800,600,200,25,"platforms/png/Tiles/14.png"));
+
+
+    livello.addElemento(new Ostacolo(1470,pavimento.y-50,30,50,"characters/enemies/cactus.png"));
+    livello.addElemento(new Ostacolo(1370,pavimento.y-50,30,50,"characters/enemies/cactus.png"));
+    livello.addElemento(new Ostacolo(1670,pavimento.y-50,30,50,"characters/enemies/cactus.png"));
+
+
+    livello.addElemento(new Piattaforma(1800,600,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Piattaforma(2200,500,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Piattaforma(2600,600,200,25,"platforms/png/Tiles/14.png"));
+
+
+    livello.addElemento(new Ostacolo(2100,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Ostacolo(2500,pavimento.y-50,30,50,"characters/enemies/snake.png"));
+    livello.addElemento(new Ostacolo(2600,600-50,30,50,"characters/enemies/snake.png"));
+    
+    livello.addElemento(new Fine(pavimento.lunghezza-100,percentualeHeight(20),20,pavimento.y-percentualeHeight(20)));
+}
+
+function setLivello3(){
+    //creo il pavimento
+    pavimento=new Piattaforma(0,canvas.height-percentualeHeight(20),3000,percentualeHeight(20),"platforms/png/Tiles/2.png");
+   
+    //aggiungo piattaforme e nemici
+
+    livello.addElemento(new Ostacolo(200,pavimento.y-50,30,50,"characters/enemies/cactus.png"));
+
+    livello.addElemento(new Ostacolo(1000,pavimento.y-50,30,50,"characters/enemies/cactus.png"));
+    livello.addElemento(new Ostacolo(1100,pavimento.y-50,30,50,"characters/enemies/cactus.png"));
+    livello.addElemento(new Ostacolo(1200,pavimento.y-50,30,50,"characters/enemies/cactus.png"));
+    
+    livello.addElemento(new Piattaforma(800,500,200,25,"platforms/png/Tiles/14.png"));
+
+    livello.addElemento(new Piattaforma(1250,350,200,25,"platforms/png/Tiles/14.png"));
+    
+
+
+
+    livello.addElemento(new Piattaforma(1650,400,200,25,"platforms/png/Tiles/14.png"));
+    //livello.addElemento(new Piattaforma(1650,450,200,25,"platforms/png/Tiles/14.png"));
+
+    livello.addElemento(new Ostacolo(1950,320,80,50,"characters/enemies/bird1.png"));
+
+    //livello.addElemento(new Piattaforma(2100,450,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Piattaforma(2100,400,200,25,"platforms/png/Tiles/14.png"));
+
+
+    livello.addElemento(new Piattaforma(2400,300,200,25,"platforms/png/Tiles/14.png"));
+    livello.addElemento(new Piattaforma(2400,250,200,25,"platforms/png/Tiles/14.png"));
+
+    livello.addElemento(new Ostacolo(2730,300,80,50,"characters/enemies/bird1.png"));
+    livello.addElemento(new Ostacolo(2800,pavimento.y-50,80,50,"characters/enemies/snake.png"));
+
+
+
+    livello.addElemento(new Ostacolo(1300,pavimento.y-38,1300,percentualeHeight(20)+40,"platforms/png/Tiles/17.png"));
+    
+
+
+    livello.addElemento(new Fine(pavimento.lunghezza-100,percentualeHeight(20),20,pavimento.y-percentualeHeight(20)));
+}
+
+
+
+
+
 /**
  * Risponde ai controlli
  */
@@ -544,6 +643,7 @@ function fermaMosse(event){
  * Disegna lo sfondo, il livello e infine il personaggio.
  */
 function render(){
+    
     if(sfondo.complete)
         context.drawImage(sfondo,0,0,canvas.width,canvas.height);
     if(personaggio.x>percentualeWidth(60) && pavimento.x+pavimento.lunghezza>canvas.width){
@@ -554,11 +654,17 @@ function render(){
         livello.disegnaLivello(-1);
         pavimento.x+=3;
         personaggio.x+=3;
-    }else{
-        livello.disegnaLivello(0);
     }
+    
     pavimento.disegna();
+    livello.disegnaLivello(0);
+    
+    
+    
+    
     personaggio.disegna();
+    //console.log("Personaggio posizione x: "+personaggio.x);
+    //console.log("Personaggio posizione y: "+personaggio.y);
 }
 /**
  * Calcola una percentuale della width del canvas in pixel.
@@ -580,18 +686,23 @@ function percentualeHeight(percento){
  * Fa perdere una vita e blocca il gioco di conseguenza.
  */
 function morte(){
+    console.log("morte")
     clearInterval(riferimentoRender);
     personaggio.velocitaX=0;
     personaggio.velocitaY=0;
     personaggio.immagine="characters/runner/Dead__004.png";
     personaggio.disegna();
+    console.log(personaggio.vita);
     setTimeout(()=>{
         if(personaggio.vita==0){
+            document.getElementById("divCanvas").hidden=true;
             canvas.hidden=true;
         document.getElementById("div").hidden=false;
         document.getElementById("div").innerHTML=`<h1 class="centerText h1">GAME OVER!</h1><br><input class="centerImg buttonMenu" type="button" value="Home" onclick="window.location.href='index.html'">`;
         }else{
-            canvas.hidden=true;
+            contCollisione=0;
+            document.getElementById("divCanvas").hidden=true;
+            canvas.hidden = true;
         document.getElementById("div").hidden=false;
         document.getElementById("div").innerHTML='<h1 class="centerText h1">Hai perso!</h1><br><input class="centerImg buttonMenu" type="button" value="Gioca" onclick="riGioca()">';
         }
@@ -609,12 +720,14 @@ function riGioca(){
     document.getElementById("div").hidden=true;
     personaggio.x=percentualeWidth(5);
     personaggio.y=pavimento.y-percentualeHeight(15);
+    document.getElementById("divCanvas").hidden=false;
     canvas.hidden=false;
 }
 /**
  * Termina il gioco.
  */
 function vittoria(){
+    document.getElementById("divCanvas").hidden=true;
     canvas.hidden=true;
     document.getElementById("div").hidden=false;
     document.getElementById("div").innerHTML=`<h1 class="centerText h1">VITTORIA!</h1><br><input class="centerImg buttonMenu" type="button" value="Home" onclick="window.location.href='index.html'">`;
