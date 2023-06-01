@@ -2,8 +2,11 @@
 <html>
     <head>
         <title> verifica registrazione </title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="script.js"></script>
     </head>
     <body>
+    <div id="div" class="menu">
 <?php
             require_once 'config.php';
             $conn = new mysqli(
@@ -21,11 +24,13 @@
             $ok = $conn->query($query_insert);
             if(!$ok){
                 echo "<h1>Errore durante l'inserimento <a href=\"registrazione.php\"> torna alla registrazione </a></h1>";
+                header('Location: login.php');
             }else{
                 echo "<h1>Inserimento effetuato<a href=\"login.php\"> torna alla login </a></h1>";
+                header('Location: login.php');
             }
             
 ?>
-            
+        </div>    
     </body>
 </html>

@@ -2,13 +2,13 @@
 -Interfaccia gioco
 -gioco:
 	✔️Personaggio
-	✔️Piattaforme (bug:non si puo passare sotto)
+	✔️Piattaforme 
 	✔️Ostacoli (mancano quelli in movimento)
-	Scroll
+	✔️Scroll
 	✔️sfondo/ambientazione
 	power-up
 	✔️morte
-	vittoria/fine livello
+	✔️vittoria/fine livello
 	monete
 	Suoni
 	livelli
