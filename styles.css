@@ -234,6 +234,7 @@ footer {
 }
 
 .scoreBoard{
+    width:30%;
     position: relative;
     text-align: center;
     color: white;
@@ -295,6 +296,13 @@ footer {
     }
     .navbar{
         zoom: normal;
+    }
+
+    .scoreBoard{
+        width: 70%;
+        position: relative;
+        text-align: center;
+        color: white;
     }
 }
 

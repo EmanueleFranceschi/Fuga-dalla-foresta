@@ -6,8 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="styles.css">
         <script src="script.js"></script>
+        <script src="menu.js"></script>
+
     </head>
     <body>
+        <audio hidden loop id="intro" src="sound/IntroTheme.mp3"></audio>
         <br>
         <div id="div" class="menu">
 
@@ -41,7 +44,7 @@
                     </th>
 
                     <th>
-                        <a href="#"><img class="loginMenu  buttonMenu" src="imgMenu/music.png"></a>
+                        <img id="musicButton" class="loginMenu  buttonMenu" src="imgMenu/music.png" onclick="musicMenu()">
                     </th>
                 </tr>
             </table>
@@ -52,8 +55,8 @@
 
             <br>
 
-            <div class="scoreBoard">
-                <img width="60%" class="centerImg"  src="gamegui/png/scoreBoard.png">
+            <div>
+                <img class="centerImg scoreBoard"  src="gamegui/png/scoreBoard.png">
                 <p class="text textScoreBoard">null</p>
             </div>
             

@@ -12,6 +12,7 @@
 	monete
 	Suoni
 	livelli
+funzione test
 ✔️-login/interfaccia per account
 ✔️-Opzioni(manca js per il suono)
 ✔️-Classifica (inserito solo un img dove andranno messi i nomi tramite il database)

@@ -4,6 +4,9 @@ Sprite del nemico uccello "https://opengameart.org/content/bird-cute-bird";
 Sprite del serpente nemico "https://opengameart.org/content/snake";
 Sprite dell'ostacolo cactus "https://opengameart.org/content/cactus-3";
 Fonte icone "https://penzilla.itch.io/handdrawn-vector-icon-pack";
-HUD "https://www.gameart2d.com/free-fantasy-game-gui.html"
+HUD "https://www.gameart2d.com/free-fantasy-game-gui.html";
+Salto suono "https://www.youtube.com/watch?v=auD_fT0KCQg";
+Menu bottoni "https://icons8.com/icons/set/html";
+musiche "https://opengameart.org/content/platformer-game-music-pack";
 
 Font testi nel menu "https://www.fontspace.com/category/gaming";

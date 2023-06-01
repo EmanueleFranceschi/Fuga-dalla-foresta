@@ -6,8 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="styles.css">
         <script src="script.js"></script>
+        <script src="menu.js"></script>
     </head>
     <body>
+        <audio hidden loop id="intro" src="sound/IntroTheme.mp3"></audio>
         <br>
         <div id="div" class="menu">
 
@@ -24,7 +26,7 @@
                     </th>
 
                     <th>
-                        <img class="loginMenu  buttonMenu" src="imgMenu/sound.png">
+                        <img id="soundButton" class="loginMenu  buttonMenu" src="imgMenu/sound.png" onclick="soundMenu()">
                     </th>
 
                     <th>
@@ -32,7 +34,7 @@
                     </th>
 
                     <th>
-                        <img class="loginMenu  buttonMenu" src="imgMenu/music.png">
+                        <img id="musicButton" class="loginMenu  buttonMenu" src="imgMenu/musicMuted.png" onclick="musicMenu()">
                     </th>
                 </tr>
             </table>
