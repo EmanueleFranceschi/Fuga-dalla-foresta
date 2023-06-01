@@ -27,6 +27,7 @@
                 header('Location: login.php');
             }else{
                 echo "<h1>Inserimento effetuato<a href=\"login.php\"> torna alla login </a></h1>";
+                header('Location: login.php');
             }
             
 ?>
