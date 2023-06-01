@@ -2,8 +2,11 @@
 <html>
     <head>
         <title> verifica registrazione </title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="script.js"></script>
     </head>
     <body>
+    <div id="div" class="menu">
 <?php
             require_once 'config.php';
             $conn = new mysqli(
@@ -26,6 +29,6 @@
             }
             
 ?>
-            
+        </div>    
     </body>
 </html>
