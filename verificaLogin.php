@@ -2,8 +2,11 @@
 <html>
     <head>
         <title> verifica login</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="script.js"></script>
     </head>
     <body>
+    <div id="div" class="menu">
     <?php
          require_once 'config.php';
          $conn = new mysqli(
@@ -27,5 +30,6 @@
             echo "Login non valida <a href=\"login.php\">Torna alla pagina di login</a>";
          }
     ?>
+    </div>
     </body>
 </html>
